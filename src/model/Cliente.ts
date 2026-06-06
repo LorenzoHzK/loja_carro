@@ -1,4 +1,5 @@
 import Pessoa from "./Pessoa";
+import MyErro from "../error/MyErro";
 
 export default class Cliente extends Pessoa {
   constructor(
@@ -25,7 +26,11 @@ export default class Cliente extends Pessoa {
 
   debitarSaldo(valor: number): void {
     if (valor > this.saldo) {
-      throw new Error("Saldo insuficiente para realizar a compra.");
+      throw new MyErro(
+        `Saldo insuficiente para realizar a compra. Saldo disponível: R$ ${this.saldo.toFixed(
+          2,
+        )}. Valor da compra: R$ ${valor.toFixed(2)}.`,
+      );
     }
 
     this.saldo -= valor;

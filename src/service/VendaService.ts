@@ -5,8 +5,12 @@ import Vendedor from "../model/Vendedor";
 import Venda from "../model/Venda";
 import IVendaService from "../model/IVendaService";
 import { FormaPagamento } from "../model/FormaPagamento";
+import MyErro from "../error/MyErro";
+import BancoVendasJson from "../database/BancoVendasJson";
 
 export default class VendaService implements IVendaService {
+  private bancoVendas = new BancoVendasJson();
+
   constructor(private loja: Loja) {}
 
   processarVenda(
@@ -18,7 +22,11 @@ export default class VendaService implements IVendaService {
   ): Venda {
     const valor = carro.getValor();
     if (cliente.getSaldo() < valor) {
-      throw new Error("Saldo insuficiente para efetuar a venda.");
+      throw new MyErro(
+        `Saldo insuficiente para efetuar a venda. O carro custa R$ ${valor.toFixed(
+          2,
+        )} e o cliente possui R$ ${cliente.getSaldo().toFixed(2)}.`,
+      );
     }
 
     const comissao = vendedor.calcularComissao(valor);
@@ -36,6 +44,7 @@ export default class VendaService implements IVendaService {
     cliente.debitarSaldo(valor);
     this.loja.registrarReceita(valor);
     vendedor.adicionarVenda();
+    this.bancoVendas.salvar(venda);
 
     return venda;
   }

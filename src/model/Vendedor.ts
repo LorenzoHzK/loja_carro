@@ -1,3 +1,4 @@
+import MyErro from "../error/MyErro";
 import Pessoa from "./Pessoa";
 
 export default class Vendedor extends Pessoa {
@@ -31,14 +32,23 @@ export default class Vendedor extends Pessoa {
     this.vendas += 1;
   }
 
-  calcularComissao(valor: number): number;
-  calcularComissao(valor: number, comissaoPersonalizada: number): number;
   calcularComissao(valor: number, comissaoPersonalizada?: number): number {
-    const taxa =
-      comissaoPersonalizada !== undefined
-        ? comissaoPersonalizada
-        : this.comissao;
-    return valor * taxa;
+    try {
+      const taxa = comissaoPersonalizada ?? this.comissao;
+
+      if (taxa < 0 || taxa > 1) {
+        throw new MyErro(
+          "Percentual de comissão inválido. Informe um valor entre 0 e 1.",
+        );
+      }
+
+      return valor * taxa;
+    } catch (err) {
+      const mensagem = err instanceof Error ? err.message : String(err);
+      throw new MyErro(
+        `Não foi possível calcular a comissão do vendedor. ${mensagem}`,
+      );
+    }
   }
 
   override getDescricao(): string {

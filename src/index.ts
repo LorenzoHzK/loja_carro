@@ -82,18 +82,6 @@ const main = async (): Promise<void> => {
 
   const carro = new Carro(modeloCarro, corCarro);
 
-  if (cliente.getSaldo() < carro.getValor()) {
-    console.error(
-      `\n Saldo insuficiente! O carro custa R$ ${carro
-        .getValor()
-        .toFixed(
-          2,
-        )} e o cliente tem apenas R$ ${cliente.getSaldo().toFixed(2)}.`,
-    );
-    inputHelper.fechar();
-    return;
-  }
-
   const formaPagamento = await inputHelper.escolherFormaPagamento();
 
   try {
@@ -113,11 +101,8 @@ const main = async (): Promise<void> => {
     console.log(`Saldo final do cliente: R$ ${cliente.getSaldo().toFixed(2)}`);
     console.log(`Total de vendas do vendedor: ${vendedor.getVendas()}\n`);
   } catch (erro) {
-    if (erro instanceof Error) {
-      console.error(`\n Erro na venda: ${erro.message}\n`);
-    } else {
-      console.error("\n Erro desconhecido ao processar a venda.\n");
-    }
+    const mensagem = erro instanceof Error ? erro.message : String(erro);
+    console.error(`\nErro ao realizar venda: ${mensagem}`);
   } finally {
     inputHelper.fechar();
   }
