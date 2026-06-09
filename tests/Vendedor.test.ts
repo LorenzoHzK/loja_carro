@@ -19,4 +19,12 @@ describe("Vendedor", () => {
       "Não foi possível calcular a comissão do vendedor.",
     );
   });
+
+  test("deve calcular a comissão com taxa personalizada válida", () => {
+    const vendedor = new Vendedor("Maria", "12345678900", 0, 2000, 0.1);
+
+    const comissao = vendedor.calcularComissao(80000, 0.05);
+
+    expect(comissao).toBe(4000);
+  });
 });
