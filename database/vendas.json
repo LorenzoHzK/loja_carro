@@ -1,1 +1,23 @@
-[]
+[
+  {
+    "cliente": {
+      "nome": "Matheus",
+      "cpf": "100200300",
+      "telefone": "10000",
+      "idade": 20
+    },
+    "vendedor": {
+      "nome": "Matheus",
+      "cpf": "1230"
+    },
+    "carro": {
+      "modelo": "Corolla",
+      "cor": "Prata",
+      "ano": 2020
+    },
+    "valor": 80000,
+    "formaPagamento": "À vista",
+    "comissao": 80000,
+    "data": "2026-06-09T23:03:42.517Z"
+  }
+]
