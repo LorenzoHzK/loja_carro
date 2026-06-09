@@ -44,10 +44,7 @@ export default class Vendedor extends Pessoa {
 
       return valor * taxa;
     } catch (err) {
-      const mensagem = err instanceof Error ? err.message : String(err);
-      throw new MyErro(
-        `Não foi possível calcular a comissão do vendedor. ${mensagem}`,
-      );
+      throw new MyErro(`Não foi possível calcular a comissão do vendedor.`);
     }
   }
 
